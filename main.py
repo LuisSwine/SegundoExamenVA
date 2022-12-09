@@ -129,7 +129,7 @@ if __name__ == '__main__':
     print("SEGUNDA EVALUACION PRACTICA")
 
     #Primero abrimos la imagen
-    img_original = openImage('jitomates2.JPG')
+    img_original = openImage('Jit1.JPG')
 
     #Primero segmentamos por kmeans
     img_blur_color = cv2.medianBlur(img_original, 13)
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     
     indexes = []
     for i in range(len(contornos)):
-        if len(contornos[i]) < 100:
+        if len(contornos[i]) < 700:
             indexes.append(i)  
     contornos = np.delete(contornos, indexes)
     
@@ -174,50 +174,50 @@ if __name__ == '__main__':
     
     #Imprmimos todos los resultados de acuerdo al procesamiento realizado
     #1. Imagen Original abierta con OpenCv
-    showImage(img_original, 'Imagen Original')
+    display(img_original)
     
     #2. Realizamos un suavizado o desenfoque de la imagen apoyandonos del suavizado de OpenCV con un kernel de 13
     #   Este paso se realiza con el objetivo de disminuir la prescencia de bordes en la imagen, puede realizarse con cualquier metodo de suavizado
     #   pero esta funcion ofrece los resultados más optimos en un tiempo considerable. 
-    showImage(img_blur_color, 'Imagen a color suavizada')
+    display(img_blur_color)
     
     #3. Aplicamos K-means a la imagen suavizada
     #   Dado que la precscencia de bordes esta suavizada, para k-means es más sencillo diferenciar los jitomates de las rocas de la imagen
     #   Estamos utilizando 4 clusters. Se ha optado por realizar esta segmentación como primer paso importante pues es alto el contraste del rojo
     #   de los tomates contra el blanco de las piedras. Al usar 4 clusters y después del suavizado se segmentan bien los jitomates
-    showImage(img_kmeans, 'Imagen Segmentada')
+    display(img_kmeans)
     
     #4. Ya que tenemos esta segmentación obtenemos una imagen con tres tonos de color de los cuales uno de se encuentra con gran saturacion de rojo
     #   Por lo que se decide realizar otra segmentación, esta vez por canales de color, extrayendo el canal rojo, al extraerlo, obtenemos una imagen
     #   en escala de grises
-    showImage(img_rojo, 'Canal de color rojo')
+    display(img_rojo)
     
     #5. Procedemos a realizar un suavizado de la imagen de canal rojo, de nuevo utilizamos la funcion de opencv
-    showImage(img_blur, 'Imagen en canal rojo suavizada')
+    display(img_blur)
     
     #6. Binarizamos la imagen, la imagen suavizada tiene bien remarcado el valor del rojo, y contiene 4 intensidades de gris, como el rojo es el valor de gris más bajo
     #   pues es el predominante en su canal de color, procedemos a extraer con np.unique() los cuatro valores y seleccionamos el menor y con ese
     #   valor binarizamos, de esta manera nos quedan bien marcados los jitomates
-    showImage(img_bin, 'Imagen binarizada')
+    display(img_bin)
     
     #7. Extraemos los contornos, para este paso podría haberse utilizado un algoritmo como watershed, o LoG para obterner los bordes, despues iterar
     #   la imagen para encontrar todas las coordenadas de los bordes de cada uno de los elementos encontrados con el procesamiento en la imagen
     #   sin embargo, después de intentarlo un tiempo, encontre la funcion findContours() de opencv que realiza un trabajo excelente sobre una imagen binarizada
     #   y que retorna directamente en un array todos los contornos de la imagen y sus coordenadas, por lo que opté por utilizar la función
     #   despues dibujamos los bordes sobre la imagen y la mostramos
-    showImage(img_copy, 'Contornos en la imagen')
+    display(img_copy)
     
     #8. Ya teniendo los contornos y todas las coordenadas lo siguiente era poder encontrar los puntos de interes de la imagen.
     #   No fue una tarea sencilla, pues a decir verdad, no encontraba una manera analítica de hacerlo, así de que después de un timepo 
     #   opte por identificar el punto de partida de la identificación de contornos de opencv y sobre ese contorno encontrar los puntos de interes
     #   para después operarlos y calcular la distancia enntre los puntos
-    showImage(img_copy_2, 'Jitomate 2')
+    display(img_copy_2)
     MessageBox.showinfo("Informacion Jitomate 2", (f'Puntos del jitomate: \n'+
                         f'A: x={punto3[0]}, y={punto3[1]} \n' +
                         f'B: x={punto4[0]}, y={punto4[1]} \n' +
                         f'Distancia entre los puntos: {dist2}'))
     
-    showImage(img_copy_1, 'Jitomate 4')
+    display(img_copy_1)
     MessageBox.showinfo("Informacion Jitomate 4", (f'Puntos del jitomate: \n'+
                         f'A: x={punto1[0]}, y={punto1[1]} \n' +
                         f'B: x={punto2[0]}, y={punto2[1]} \n' +
